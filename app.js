@@ -3,7 +3,22 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bodyParser = require('body-parser');
 
+// New Code
+
+var monk = require('monk');
+var db = monk('localhost:27017/nodetest1');
+
+
+// make our db accessible to our router
+app.use(function(req,res,next){
+  req.db = db;
+  next();
+});
+
+// these lines are establishing middleware for Express. due to chaining, 
+//needs to come BEFORE route definitions.
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
